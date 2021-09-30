@@ -1,29 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
 import {Route} from 'react-router-dom';
 import Home from './pages/Home';
-import AddItem from './pages/AddItem';
 import Cart from './pages/Cart';
 import Navbar from './components/Navbar';
+import AddItem from './pages/AddItem';
+import AddCategory from './pages/AddCategory';
 
-//Is this how you comment???
 function App() {
   return (
-    <div className="App">
+    <div>
       <Navbar />
-      <Route path='/' exact >
+      <Route path='/' exact>
         <Home />
       </Route>
-      <Route path='/cart' exact >
+      <Route path='/cart'>
         <Cart />
-        </Route>
-      <Route path='/add-item' exact >
+      </Route>
+      <Route path='/add-item'>
         <AddItem />
+      </Route>
+      <Route path='/add-category'>
+        <AddCategory />
       </Route>
     </div>
   );
 }
 
 export default App;
-    
-
