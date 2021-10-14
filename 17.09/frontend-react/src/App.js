@@ -4,7 +4,8 @@ import Greeting from './components/Greeting';
 import {useState} from "react";
 
 function App() {
-  const [magicNumber, setMagicNumber] = useState[0]
+  const [magicNumber, setMagicNumber] = useState(0)
+  const [show, setShow] = useState(true)
 
 
   return (
