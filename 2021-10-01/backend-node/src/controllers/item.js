@@ -24,7 +24,7 @@ exports.createItem = async (req, res) => {
 exports.updateItem = async (req, res) => {
   const { id } = req.params;
   let body = req.body;
-  const item = await Item.findOneAndUpdate({ _id: id })
+  const item = await Item.findOneAndUpdate({ _id: id }, {$inc : {"quality" : 1} })
 
   if (!item) res.status(404).send("No item with that id found")
   if(item){
