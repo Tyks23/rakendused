@@ -21,7 +21,7 @@ function Home() {
     },[])
 
     useEffect(()=>{
-        fetch('http://localhost:8080/categories').then(res => {
+        fetch('http://localhost:8081/categories').then(res => {
             return res.json();
         }).then(data => {
             console.log(data);
@@ -46,6 +46,7 @@ function Home() {
             <CategoryList categories={loadedCategories} />
         </div>
     );
+    return(<div>Laeb</div>)
 }
 
 export default Home;

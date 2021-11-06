@@ -1,4 +1,37 @@
+p{
+  margin-left: 1%;
+}
+.div{
+  margin-left: 5%;
+}
 
 h1 {
-  text-align:center;
+  text-align:left;
+}
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 30px;
+}
+
+select{
+  width: 177px;
+  height: 30px;
+  padding: 5px;
+  color: green;
+}
+select option { color: black; }
+select option:first-child{
+  color: green;
+}
+input{
+  color: green;
 }
