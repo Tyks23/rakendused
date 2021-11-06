@@ -1,3 +1,16 @@
+Kerged lehe css disainid:
+
+![Alt text](https://github.com/Tyks23/rakendused/blob/main/06.09/frontend/public/chrome_2021-10-24_22-56-35.png)
+![Alt text](https://github.com/Tyks23/rakendused/blob/main/06.09/frontend/public/chrome_2021-10-24_23-03-02.png)
+![Alt text](https://github.com/Tyks23/rakendused/blob/main/06.09/frontend/public/chrome_2021-10-24_23-05-14.png)
+
+
+
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
