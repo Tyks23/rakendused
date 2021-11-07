@@ -8,7 +8,6 @@ import './Nav.css';
 function Auth() {
   const [state, dispatch] = useContext(Context);
   const {user} = state.auth;
-
   const handleLogout = (e) => {
     e.preventDefault();
     dispatch(logoutUser());
@@ -25,8 +24,12 @@ function Auth() {
 
   return (
     <>
-      <Link to="/login" className = "NavLink">Log in</Link>
-      <Link to="/signup" className = "NavLink">Sign up</Link>
+      <Link to="/login" className = "NavLink">
+        <Button type="default">Log in</Button>
+      </Link>
+      <Link to="/signup" className = "NavLink">
+      <Button type="default">Sign up</Button>
+      </Link>
     </>
   )
 }
@@ -34,8 +37,12 @@ function Auth() {
 function Nav() {
   return (
     <>
-      <Link to="/" className = "NavLink">Homepage</Link>
-      <Link to="/posts" className = "NavLink">Posts</Link>
+      <Link to="/" className = "NavLink">
+      <Button type="default">Homepage</Button>
+      </Link>
+      <Link to="/posts" className = "NavLink">
+      <Button type="default">Posts</Button>
+      </Link>
       <Auth/>
     </>
   );
