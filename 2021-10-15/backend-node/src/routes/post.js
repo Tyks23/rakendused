@@ -1,10 +1,9 @@
 const router = require("express").Router()
-const itemController = require("../controllers/item")
+const postController = require("../controllers/post")
 
-router.get("/", itemController.getItems)
-router.post("/create", itemController.createItem)
-router.put("/update/:id", itemController.updateItem)
-router.put("/updateAddPlus1/:id", itemController.updateItemAddPlus1)
-router.delete("/delete/:id", itemController.deleteItem)
+router.get("/", postController.getPosts)
+router.post("/create", postController.createPost)
+router.put("/update/:id", postController.updatePost)
+router.delete("/delete/:id", postController.deletePost)
 
 module.exports = router

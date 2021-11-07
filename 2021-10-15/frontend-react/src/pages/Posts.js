@@ -1,88 +1,69 @@
-import { useContext, useState, useRef, useEffect } from "react";
-import { Context } from "../store";
-import { addPost, removePost, updatePosts } from "../store/actions";
+import {useContext, useEffect, useState} from "react";
+import {Context} from "../store";
+import {addPost, updatePosts} from "../store/actions";
+import {PostsTable} from "../components/PostsTable";
+import {PostForm} from "../components/PostForm";
+import api from '../api';
 
 function Posts() {
-  const [title, setTitle] = useState("");
+  const [editingPost, setEditingPost] = useState(null);
   const [state, dispatch] = useContext(Context);
-  const inputRef = useRef(null);
 
-  // Ilma dependency massivita ehk ilma [] kutsub välja igal renderdusel
-  // tühja massiivi dependencyna esimest korda
-  // saab ka kutsuda teatud state muutustel välja
-  useEffect(() => {
-    dispatch(updatePosts([
-      {
-        id: 1,
-        title: "Test-prefetched-array-1"
-      },
-      {
-        id: 2,
-        title: "Test-prefetched-array-2"
-      },
-      {
-        id: 3,
-        title: "Test-prefetched-array-3"
-      },
-      {
-        id: 4,
-        title: "Test-prefetched-array-4"
-      },
-    ]))
-  }, [])
+  const loadPosts = async () => {
+    const posts = await api.posts.loadPosts(state.auth.token);
+    dispatch(updatePosts(posts))
+  };
 
   // Või võite panna eraldi nupu, et "Get latest from database" (Sync)
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    setTitle("");
-
-    addNewPost()
-
-    if (inputRef.current) inputRef.current.focus();
+  const addNewPost = async (post) => {
+    const result = await api.posts.createPost(post, state.auth.token);
+    dispatch(addPost(result));
   };
 
-
-  const addNewPost = () => {
-    const newPost = {
-      id: Date.now(),
-      title,
-    };
-
-    // Salvestame andmebaasi ja kui on edukas, 
-    // siis teeme dispatchi ja uuendame state lokaalselt
-
-    dispatch(addPost(newPost));
+  const editPost = async (post) => {
+    setEditingPost(post);
   };
 
-  console.log({ inputRef });
+  const updatePost = async (post) => {
+    await api.posts.updatePost(post, state.auth.token);
+    await loadPosts();
+    setEditingPost(null);
+  }
+
+  const deletePost = async (post) => {
+    await api.posts.deletePost(post, state.auth.token);
+    await loadPosts();
+  }
+
+  const handleSubmit = (post) => {
+    if (editingPost && editingPost._id === post._id)
+      return updatePost(post);
+    return addNewPost(post);
+  };
+
+  useEffect(async () => {
+    if(state.auth.token) {
+      await loadPosts();
+    }
+  }, []);
+
+  if(!state.auth.user) {
+    return <>
+      <h1>Please log in</h1>
+    </>
+  }
 
   return (
-    <div style={{ textAlign: "center" }}>
+    <div style={{textAlign: "center"}}>
       <h1>Posts</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          ref={inputRef}
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          autoFocus
-        />
-        <button type="submit">Submit</button>
-      </form>
+      <PostForm edit={editingPost} onSubmit={handleSubmit}/>
 
-      {state.posts.data.map((e) => (
-        <li key={e.id}>
-          {e.id} {e.title}
-          <span
-            style={{ cursor: "pointer" }}
-            onClick={() => dispatch(removePost(e.id))}
-          >
-            &#128540;
-          </span>
-        </li>
-      ))}
+      <PostsTable
+        posts={state.posts.data}
+        onEdit={editPost}
+        onDelete={deletePost}
+      />
     </div>
   );
 }

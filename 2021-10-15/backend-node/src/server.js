@@ -1,17 +1,21 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const cors = require('cors');
 const PORT = process.env.PORT || 3000
 const jwtAuth = require("./middleware/jwtAuth")
 require("dotenv").config()
 
 const itemRoutes = require('./routes/item');
 const authRoutes = require('./routes/auth');
+const postRoutes = require('./routes/post');
 
 const app = express()
 app.use(express.json());
+app.use(cors());
 
 app.use('/api/item', itemRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/posts', jwtAuth, postRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello World!')

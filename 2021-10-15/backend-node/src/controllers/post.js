@@ -1,48 +1,52 @@
 const Post = require('../models/Post')
 
 exports.getPosts = async (req, res) => {
-  const posts = await Post.find({})
-  
+  const user = req.user;
+  const posts = await Post.find({
+    user: user.id,
+  });
+
   res.status(200).send(posts)
 }
 
 exports.createPost = async (req, res) => {
+  const {title, text} = req.body;
+  const user = req.user;
 
-    const {title, text, firstName, lastName} = req.body;
-
-  const newPost = {
+  const createdPost = new Post({
     title,
     text,
-    firstName,
-    lastName
-  }
-
-  const createdPost = new Post(newPost)
+    user: user.id,
+  })
 
   const savedPost = await createdPost.save()
 
-  res.status(200).send(`${savedPost._id}`)
+  res.status(200).send(savedPost);
 }
 
 exports.updatePost = async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
+  const user = req.user;
+  const post = await Post.findOneAndUpdate({
+    _id: id,
+    user: user.id,
+  }, req.body);
 
-  const post = await Post.findOneAndUpdate({ _id: id }, req.body)
+  if (!post) res.status(404).send("No post with that id found")
 
-  if (!post) res.status(404).send("No item with that id found")
-
-  const updatedPost = await Post.findOne({ _id: id })
-
-  res.status(200).send(`Successfully updated the following item: \n ${updatedPost}`)
+  const updatedPost = await Post.findOne({_id: id})
+  res.status(200).send(updatedPost);
 }
 
 exports.deletePost = async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params;
+  const user = req.user;
 
-  const post = await Post.findOneAndDelete({ _id: id })
+  const post = await Post.findOneAndDelete({
+    _id: id,
+    user: user.id,
+  })
 
   if (!post) res.status(404).send("No post with that id found")
-  console.log(post)
-
-  res.status(200).send(`Successfully deleted the following post: \n ${post}`)
+  res.status(204).end();
 }

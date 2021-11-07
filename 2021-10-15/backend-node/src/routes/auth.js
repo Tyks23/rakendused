@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const authController = require("../controllers/auth");
 const validationMiddleware = require("../middleware/validationMiddleware");
-const { check } = require("express-validator");
+const {check} = require("express-validator");
 
 router.post(
   "/login",
@@ -11,7 +11,7 @@ router.post(
       .normalizeEmail()
       .withMessage("Must be correctly formatted e-mail"),
     check("password")
-      .isLength({ min: 6 })
+      .isLength({min: 6})
       .withMessage("Must be at least 6 characters long"),
   ],
   validationMiddleware,
@@ -22,14 +22,14 @@ router.post(
   "/signup",
   [
     check("firstName")
-      .isLength({ min: 3 })
+      .isLength({min: 3})
       .withMessage("Must be at least 3 characters long")
       .trim()
       .exists()
       .matches(/^[A-ZÕÄÖÜa-zõäöü]+$/)
       .withMessage("Must be alphabetic"),
     check("lastName")
-      .isLength({ min: 3 })
+      .isLength({min: 3})
       .withMessage("Must be at least 3 characters long")
       .trim()
       .exists()
@@ -40,8 +40,11 @@ router.post(
       .normalizeEmail()
       .withMessage("Must be correctly formatted e-mail"),
     check("password")
-      .isLength({ min: 6 })
+      .isLength({min: 6})
       .withMessage("Must be at least 6 characters long"),
+    check("passwordConfirmation")
+      .custom((input, meta) => meta.req.body.password === input)
+      .withMessage('Passwords do not match'),
   ],
   validationMiddleware,
   authController.signup

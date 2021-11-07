@@ -1,5 +1,6 @@
 export const POST_ADD = "POST_ADD"
 export const POST_REMOVE = "POST_REMOVE"
+export const POST_UPDATE = "POST_UPDATE"
 export const USER_LOGIN = "USER_LOGIN"
 export const USER_LOGOUT = "USER_LOGOUT"
 
@@ -13,17 +14,30 @@ export const removePost = id => ({
   payload: id
 })
 
-// Lisada siis uus konstant selle jaoks ja muuta ka reduceris
 export const updatePosts = array => ({
-  type: "POSTS_UPDATE",
+  type: POST_UPDATE,
   payload: array
 })
 
-export const loginUser = data => ({
-  type: USER_LOGIN,
-  payload: data
-})
+export const loginUser = data => {
+  const payload = {
+    token: data.token,
+    user: {
+      email: data.email,
+      firstName: data.firstName,
+      lastName: data.lastName,
+    }
+  };
 
-export const logoutUser = () => ({
-  type: USER_LOGOUT
-})
+  localStorage.setItem('token', data.token);
+  localStorage.setItem('user', JSON.stringify(payload.user));
+  return {type: USER_LOGIN, payload};
+}
+
+export const logoutUser = () => {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+  return {
+    type: USER_LOGOUT
+  };
+}

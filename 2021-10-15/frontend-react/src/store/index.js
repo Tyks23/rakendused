@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import {createContext, useEffect, useReducer} from "react";
 import { postReducer, authReducer } from "./reducer";
 import combineReducers from "react-combine-reducers"
 
@@ -6,9 +6,17 @@ const initialPosts = {
   data: []
 }
 
+const getUser = () => {
+  const user = localStorage.getItem('user');
+  if(user) {
+    return JSON.parse(user);
+  }
+  return null;
+}
+
 const initialAuth = {
-  token: null,
-  user: null
+  token: localStorage.getItem('token') || null,
+  user: getUser()
 }
 
 const [combinedReducer, initialState] = combineReducers({

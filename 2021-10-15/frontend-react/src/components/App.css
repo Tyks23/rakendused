@@ -36,3 +36,23 @@
     transform: rotate(360deg);
   }
 }
+
+Header {
+  justify-content: center;
+  background-color: lightblue;
+  color: blue;
+  padding:0px 5% 0px 5%;
+}
+
+Link {
+  font-size: large;
+}
+
+Footer {
+  text-align: center;
+  position:absolute;
+   bottom:0;
+   width:100%;
+   height:10%;  
+   background:lightblue;
+}
